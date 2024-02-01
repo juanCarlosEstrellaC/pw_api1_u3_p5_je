@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
 
-// API está representado por un proyecto Java				
-// El Servicio está representado por una Clase Controller
-// Las capacidades está representadas por los Métodos de esa clase controller.
+//http://localhost:8082/   API/v1.0/Matricula   /estudiantes   /consultar/{id}
+// 							Proyecto Java 		  Servicio 		Capacidades
+
+// API está representado por un proyecto Java.									 | Proyecto Java para API de Matriculación
+// El Servicio está representado por una Clase Controller.       				 | El Servicio (este Controller) es estudiantes
+// Las capacidades está representadas por los Métodos de esa clase controller. 	 | Las capacidades son los distintos [Endpoints]
 
 @RestController
 @RequestMapping(path = "/estudiantes")
