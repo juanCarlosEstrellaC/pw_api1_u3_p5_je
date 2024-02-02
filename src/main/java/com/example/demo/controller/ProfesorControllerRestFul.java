@@ -24,38 +24,52 @@ public class ProfesorControllerRestFul {
 	@Autowired
 	private IProfesorService profesorService;
 
-	// GET: http://localhost:8082/API/v1.0/Matricula/profesores/consultarPorId/{id}
-	@GetMapping(path = "/consultarPorId/{id}")
+	// GET:
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/consultarPorId/{id}
+	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores/{id}	GET
+	@GetMapping(path = "/{id}")
 	public Profesor consultarPorId(@PathVariable Integer id) {
 		return this.profesorService.buscar(id);
 	}
 	
-	// GET para filtrar: http://localhost:8082/API/v1.0/Matricula/profesores/consultarTodosPorGenero?genero=M
-	@GetMapping(path = "/consultarTodosPorGenero")
-	public List<Profesor> consultarTodosPorGenero(@RequestParam String genero){
+	// GET para filtrar:
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/consultarTodosPorGenero?genero=M
+	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores		GET
+	@GetMapping
+	public List<Profesor> consultarTodosPorGenero(@RequestParam(required = true, defaultValue = "M") String genero){
 		return this.profesorService.seleccionarTodos(genero);
 	}
 
-	// POST: http://localhost:8082/API/v1.0/Matricula/profesores/guardar
-	@PostMapping(path = "/guardar")
+	// POST: 
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/guardar
+	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores		POST
+	@PostMapping
 	public void guardar(@RequestBody Profesor profesor) {
 		this.profesorService.guardar(profesor);
 	}
 
-	// PUT: http://localhost:8082/API/v1.0/Matricula/profesores/actualizar
-	@PutMapping(path = "/actualizar")
-	public void actualizar(@RequestBody Profesor profesor) {
+	// PUT: 
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/actualizar/{id}
+	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores/{id}	PUT
+	@PutMapping(path = "/{id}")
+	public void actualizar(@RequestBody Profesor profesor, @PathVariable Integer id) {
+		profesor.setId(id);
 		this.profesorService.actualizar(profesor);
 	}
 
-	// PATCH: http://localhost:8082/API/v1.0/Matricula/profesores/actualizarParcial
-	@PatchMapping(path = "/actualizarParcial")
-	public void actualizarParcial(@RequestBody Profesor profesor) {
+	// PATCH: 
+	// Antes:    http://localhost:8082/API/v1.0/Matricula/profesores/actualizarParcial
+	// Despues:  http://localhost:8082/API/v1.0/Matricula/profesores/{id}	PATCH
+	@PatchMapping(path = "/{id}")
+	public void actualizarParcial(@RequestBody Profesor profesor, @PathVariable Integer id) {
+		profesor.setId(id);
 		this.profesorService.actualizarParcial(profesor.getApellido(), profesor.getNombre(), profesor.getId());
 	}
 
-	// DELETE: http://localhost:8082/API/v1.0/Matricula/profesores/borrarPorId/{id}
-	@DeleteMapping(path = "borrarPorId/{id}")
+	// DELETE: 
+	// Antes:  http://localhost:8082/API/v1.0/Matricula/profesores/borrarPorId/{id}
+	// Despues:  http://localhost:8082/API/v1.0/Matricula/profesores/{id}
+	@DeleteMapping(path = "/{id}")
 	public void borrarPorId(@PathVariable Integer id) {
 		this.profesorService.borrar(id);
 	}
