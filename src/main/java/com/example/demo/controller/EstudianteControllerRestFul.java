@@ -25,51 +25,56 @@ import com.example.demo.service.IEstudianteService;
 // Las capacidades está representadas por los Métodos de esa clase controller. 	 | Las capacidades son los distintos [Endpoints]
 
 @RestController
-@RequestMapping(path = "/estudiantes")
+@RequestMapping(path = "/estudiantes")  // debe ir en plural
 public class EstudianteControllerRestFul {
 
 	@Autowired
 	private IEstudianteService estudianteService;
 
 	// GET
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/consultar/{id}
-	@GetMapping(path = "/consultar/{id}")
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/estudiantes/consultar/{id}
+	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes/{id}   GET
+	@GetMapping(path = "/{id}")
 	public Estudiante consultar(@PathVariable Integer id) {
 		return this.estudianteService.buscar(id);
 	}
 	
 	// GET y filtrar
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/consultarTodos?genero=M&edad=100
-	@GetMapping(path = "/consultarTodos")
-	public List<Estudiante> consultarTodos(@RequestParam String genero, @RequestParam Integer edad) {
-		System.out.println(edad);
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/estudiantes/consultarTodos?genero=M&edad=100
+	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes?genero=M   GET
+	@GetMapping
+	public List<Estudiante> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero ) {
 		return this.estudianteService.seleccionarTodos(genero);
 	}
 	
 	// POST
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/guardar
-	@PostMapping(path = "/guardar")
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/estudiantes/guardar
+	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes	POST
+	@PostMapping
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}
 	
 	// PUT
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizar
-	@PutMapping(path = "/actualizar")
-	public void actualizar(@RequestBody Estudiante estudiante) {
+	// Antes:   http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizar/{id}  
+	// Después: http://localhost:8082/API/v1.0/Matricula/estudiantes   PUT
+	@PutMapping(path = "/{id}")
+	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+		estudiante.setId(id);
 		this.estudianteService.actualizar(estudiante);
 	}
 	
 	// PATCH
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizarParcial
-	@PatchMapping(path = "/actualizarParcial")
-	public void actualizarParcial(@RequestBody Estudiante estudiante) {
-		this.estudianteService.actualizarParcial(estudiante.getApellido(), estudiante.getNombre(), estudiante.getId());
+	// http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizarParcial/{id}  
+	// http://localhost:8082/API/v1.0/Matricula/estudiantes/{id}  PATCH
+	@PatchMapping(path = "/{id}")
+	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+		this.estudianteService.actualizarParcial(estudiante.getApellido(), estudiante.getNombre(), id);
 	}
 	
 	// DELETE
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/borrar/{id}
-	@DeleteMapping(path = "/borrar/{id}")
+	// http://localhost:8082/API/v1.0/Matricula/estudiantes/{id}  DELETE
+	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.estudianteService.borrar(id);
 	}
