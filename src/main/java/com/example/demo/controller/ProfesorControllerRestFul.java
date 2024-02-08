@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,7 +28,7 @@ public class ProfesorControllerRestFul {
 	// GET:
 	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/consultarPorId/{id}
 	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores/{id}	GET
-	@GetMapping(path = "/{id}")
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
 	public Profesor consultarPorId(@PathVariable Integer id) {
 		return this.profesorService.buscar(id);
 	}
@@ -35,7 +36,7 @@ public class ProfesorControllerRestFul {
 	// GET para filtrar:
 	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/consultarTodosPorGenero?genero=M
 	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores		GET
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
 	public List<Profesor> consultarTodosPorGenero(@RequestParam(required = true, defaultValue = "M") String genero){
 		return this.profesorService.seleccionarTodos(genero);
 	}
@@ -43,7 +44,7 @@ public class ProfesorControllerRestFul {
 	// POST: 
 	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/guardar
 	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores		POST
-	@PostMapping
+	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
 	public void guardar(@RequestBody Profesor profesor) {
 		this.profesorService.guardar(profesor);
 	}
@@ -51,7 +52,7 @@ public class ProfesorControllerRestFul {
 	// PUT: 
 	// Antes:   http://localhost:8082/API/v1.0/Matricula/profesores/actualizar/{id}
 	// Despues: http://localhost:8082/API/v1.0/Matricula/profesores/{id}	PUT
-	@PutMapping(path = "/{id}")
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_XML_VALUE)
 	public void actualizar(@RequestBody Profesor profesor, @PathVariable Integer id) {
 		profesor.setId(id);
 		this.profesorService.actualizar(profesor);
@@ -60,7 +61,7 @@ public class ProfesorControllerRestFul {
 	// PATCH: 
 	// Antes:    http://localhost:8082/API/v1.0/Matricula/profesores/actualizarParcial
 	// Despues:  http://localhost:8082/API/v1.0/Matricula/profesores/{id}	PATCH
-	@PatchMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_XML_VALUE)
 	public void actualizarParcial(@RequestBody Profesor profesor, @PathVariable Integer id) {
 		profesor.setId(id);
 		this.profesorService.actualizarParcial(profesor.getApellido(), profesor.getNombre(), profesor.getId());

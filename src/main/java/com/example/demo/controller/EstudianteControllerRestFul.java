@@ -90,7 +90,7 @@ public class EstudianteControllerRestFul {
 
 	// DELETE
 	// http://localhost:8082/API/v1.0/Matricula/estudiantes/{id} DELETE
-	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_XML_VALUE)
+	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.estudianteService.borrar(id);
 	}
