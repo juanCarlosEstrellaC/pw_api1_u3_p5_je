@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.IMateriaService;
+import com.example.demo.service.to.EstudianteTO;
+import com.example.demo.service.to.MateriaTO;
 
 //http://localhost:8082/   API/v1.0/Matricula   /estudiantes   /consultar/{id}
 // 							Proyecto Java 		  Servicio 		Capacidades
@@ -34,6 +37,9 @@ public class EstudianteControllerRestFul {
 
 	@Autowired
 	private IEstudianteService estudianteService;
+	
+	@Autowired
+	private IMateriaService iMateriaService;
 
 	// GET
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/consultar/{id}
@@ -51,10 +57,7 @@ public class EstudianteControllerRestFul {
 	// Antes:
 	// http://localhost:8082/API/v1.0/Matricula/estudiantes/consultarTodos?genero=M&edad=100
 	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes?genero=M GET
-	
-	// PRODUCES CUANDO NO ES VOID
-	
-	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/tmp" ,produces = MediaType.APPLICATION_XML_VALUE)
 	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero) {
 		List<Estudiante> lista = this.estudianteService.seleccionarTodos(genero);
 		HttpHeaders cabeceras = new HttpHeaders();
@@ -62,7 +65,31 @@ public class EstudianteControllerRestFul {
 		cabeceras.add("mensaje_info", "El sistema va estar en mantenimiento el fin de semana.");
 		return new ResponseEntity<>(lista, cabeceras, 242);
 	}
-
+	
+	
+	
+	// HATEOAS:
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
+		List<EstudianteTO> lista = this.estudianteService.buscarTodosTO();
+		return ResponseEntity.status(HttpStatus.OK).body(lista);
+	}
+	
+	
+	
+	// http://localhost:8082/API/v1.0/Matricula/estudiantes/{id}/materias  GET
+	@GetMapping(path = "/{id}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<MateriaTO>> consultarMateriasPorId(@PathVariable Integer id){
+		List<MateriaTO> lista = this.iMateriaService.buscarPorIdEstudiante(id);
+		return ResponseEntity.status(HttpStatus.OK).body(lista);
+	}
+	
+	
+	
+	
+	
+	
 	// POST
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/guardar
 	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes POST
