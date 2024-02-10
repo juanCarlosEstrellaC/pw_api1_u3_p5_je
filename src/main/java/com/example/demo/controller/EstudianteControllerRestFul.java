@@ -1,8 +1,13 @@
 package com.example.demo.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,8 +30,7 @@ import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
 //http://localhost:8082/   API/v1.0/Matricula   /estudiantes   /consultar/{id}
-// 							Proyecto Java 		  Servicio 		Capacidades
-
+//	Proyecto Java 		  Servicio 		Capacidades
 // API está representado por un proyecto Java.									 | Proyecto Java para API de Matriculación
 // El Servicio está representado por una Clase Controller.       				 | El Servicio (este Controller) es estudiantes
 // Las capacidades está representadas por los Métodos de esa clase controller. 	 | Las capacidades son los distintos [Endpoints]
@@ -45,11 +49,14 @@ public class EstudianteControllerRestFul {
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/consultar/{id}
 	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes/{id} GET
 	@GetMapping(path = "/{id}", produces = "application/json")
-	public ResponseEntity<Estudiante> consultar(@PathVariable Integer id) {
-		// 240: grupo de peticiones satisfactorias.
-		// 240: Recurso Estudiante encontrado satisfactoriamente.
-		Estudiante estu = this.estudianteService.buscar(id);
-		//return ResponseEntity.status(241).body(estu);
+	public ResponseEntity<EstudianteTO> consultar(@PathVariable Integer id) {
+
+		//Estudiante estu = this.estudianteService.buscar(id);
+		EstudianteTO estu = this.estudianteService.buscarTO(id);
+		Link link = linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId())).withRel("susMaterias");
+		Link link2 = linkTo(methodOn(EstudianteControllerRestFul.class).consultar(estu.getId())).withSelfRel();
+		estu.add(link);
+		estu.add(link2);
 		return ResponseEntity.status(HttpStatus.OK).body(estu);
 	}
 
@@ -68,11 +75,15 @@ public class EstudianteControllerRestFul {
 	
 	
 	
-	// HATEOAS:
+	// *****************************  H A T E O A S ************************************
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
 		List<EstudianteTO> lista = this.estudianteService.buscarTodosTO();
+		for (EstudianteTO est : lista) {
+			Link link = linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(est.getId())).withRel("susMaterias");
+			est.add(link);
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(lista);
 	}
 	
