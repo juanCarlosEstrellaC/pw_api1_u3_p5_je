@@ -111,10 +111,10 @@ public class EstudianteControllerRestFul {
 	public ResponseEntity<List<EstudianteDTO>> consultarTodosDTO(){
 		List<EstudianteDTO> listaEstudiantesDTO = this.estudianteService.seleccionarTodosDTO();
 		for (EstudianteDTO estudianteDTO : listaEstudiantesDTO) {
-			Link link = linkTo(methodOn(EstudianteControllerRestFul.class).consultar(estudianteDTO.getId())).withRel("EstudianteTO");
-			Link link2 = linkTo(methodOn(EstudianteControllerRestFul.class).consultarTodosDTO()).withSelfRel();
+			Link link = linkTo(methodOn(EstudianteControllerRestFul.class).consultar(estudianteDTO.getId())).withSelfRel();
+			//Link link2 = linkTo(methodOn(EstudianteControllerRestFul.class).consultarTodosDTO()).withSelfRel();
 			estudianteDTO.add(link);
-			estudianteDTO.add(link2);
+			//estudianteDTO.add(link2);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(listaEstudiantesDTO);
 	}
