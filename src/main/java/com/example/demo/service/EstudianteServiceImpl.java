@@ -18,13 +18,16 @@ public class EstudianteServiceImpl implements IEstudianteService {
 	private IEstudianteRepository estudianteRepository;
 
 	@Override
-	public void guardar(Estudiante estudiante) {
-		this.estudianteRepository.insertar(estudiante);
+	public void guardar(EstudianteTO estudianteTO) {
+		Estudiante e = this.convertirTOaEstudiante(estudianteTO);
+		System.out.println(e);
+		this.estudianteRepository.insertar(e);
 	}
 
 	@Override
-	public void actualizar(Estudiante estudiante) {
-		this.estudianteRepository.actualizar(estudiante);
+	public void actualizar(EstudianteTO estudianteTO) {
+		Estudiante e = this.convertirTOaEstudiante(estudianteTO);
+		this.estudianteRepository.actualizar(e);
 	}
 
 	@Override
@@ -49,8 +52,8 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
 	@Override
 	public List<EstudianteTO> buscarTodosTO() {
-		//List<Estudiante> lista = this.estudianteRepository.seleccionarTodos("M");
-		
+		// List<Estudiante> lista = this.estudianteRepository.seleccionarTodos("M");
+
 		List<Estudiante> lista = this.estudianteRepository.seleccionarTodosSinFiltro();
 		List<EstudianteTO> listaFinal = new ArrayList<>();
 		for (Estudiante est : lista) {
@@ -58,7 +61,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		}
 		return listaFinal;
 	}
-	
+
 	private EstudianteTO convertir(Estudiante est) {
 		EstudianteTO estuTO = new EstudianteTO();
 		estuTO.setId(est.getId());
@@ -72,6 +75,21 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		estuTO.setHobby(est.getHobby());
 		estuTO.setNumeroHermanos(est.getNumeroHermanos());
 		return estuTO;
+	}
+
+	private Estudiante convertirTOaEstudiante(EstudianteTO estuTO) {
+		Estudiante estu = new Estudiante();
+		estu.setId(estuTO.getId());
+		estu.setNombre(estuTO.getNombre());
+		estu.setApellido(estuTO.getApellido());
+		estu.setGenero(estuTO.getGenero());
+		estu.setFechaNacimiento(estuTO.getFechaNacimiento());
+		estu.setEdad(estuTO.getEdad());
+		estu.setDireccion(estuTO.getDireccion());
+		estu.setEstadoCivil(estuTO.getEstadoCivil());
+		estu.setHobby(estuTO.getHobby());
+		estu.setNumeroHermanos(estuTO.getNumeroHermanos());
+		return estu;
 	}
 
 	@Override

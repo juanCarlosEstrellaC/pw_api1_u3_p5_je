@@ -22,7 +22,10 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 
 	@Override
 	public void insertar(Estudiante estudiante) {
-		this.entityManager.persist(estudiante);
+		
+		System.out.println("HOOLAAAAAAAAAAAAAAAA");
+		System.out.println(estudiante);
+		this.entityManager.merge(estudiante);
 	}
 
 	@Override

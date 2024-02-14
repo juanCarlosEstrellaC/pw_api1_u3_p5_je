@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "estudiante")
-//@JsonIgnoreProperties(value = "materias")
+@JsonIgnoreProperties(value = "materias")
 public class Estudiante {
 
 	@Id
@@ -53,7 +54,7 @@ public class Estudiante {
 	private String direccion;
 
 	// RELACIONES:
-	@OneToMany(mappedBy = "estudiante")
+	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
 	private List<Materia> materias;
 
 	// ToString:
@@ -61,8 +62,7 @@ public class Estudiante {
 	public String toString() {
 		return "Estudiante [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", genero=" + genero
 				+ ", fechaNacimiento=" + fechaNacimiento + ", hobby=" + hobby + ", edad=" + edad + ", estadoCivil="
-				+ estadoCivil + ", numeroHermanos=" + numeroHermanos + ", direccion=" + direccion + ", materias="
-				+ materias + "]";
+				+ estadoCivil + ", numeroHermanos=" + numeroHermanos + ", direccion=" + direccion + "]";
 	}
 	
 	// GET Y SET

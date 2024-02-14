@@ -124,18 +124,18 @@ public class EstudianteControllerRestFul {
 	/* POST
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/guardar
 	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes POST */
-	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
-	public void guardar(@RequestBody Estudiante estudiante) {
-		this.estudianteService.guardar(estudiante);
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void guardar(@RequestBody EstudianteTO estudianteTO) {
+		this.estudianteService.guardar(estudianteTO);
 	}
 
 	/* PUT
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizar/{id}
 	// Después: http://localhost:8082/API/v1.0/Matricula/estudiantes PUT */
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
-		estudiante.setId(id);
-		this.estudianteService.actualizar(estudiante);
+	public void actualizar(@RequestBody EstudianteTO estudianteTO, @PathVariable Integer id) {
+		estudianteTO.setId(id);
+		this.estudianteService.actualizar(estudianteTO);
 	}
 
 	/* PATCH
