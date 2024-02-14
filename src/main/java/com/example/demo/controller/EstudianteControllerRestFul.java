@@ -49,13 +49,13 @@ public class EstudianteControllerRestFul {
 	@Autowired
 	private IMateriaService iMateriaService;
 
-	/*GET -> Consultar EstudiantesTO por ID (TIENE HATEOAS)   
+	
+	/* GET -> Consultar EstudiantesTO por ID (TIENE HATEOAS)   
 //	 Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/consultar/{id}
 //	 Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes/{id} GET
  * */ 
 	@GetMapping(path = "/{id}", produces = "application/json") 
 	public ResponseEntity<EstudianteTO> consultar(@PathVariable Integer id) {
-		//Estudiante estu = this.estudianteService.buscar(id);
 		EstudianteTO estu = this.estudianteService.buscarTO(id);
 		Link link = linkTo(methodOn(EstudianteControllerRestFul.class).consultarMateriasPorId(estu.getId())).withRel("susMaterias");
 		Link link2 = linkTo(methodOn(EstudianteControllerRestFul.class).consultar(estu.getId())).withSelfRel();
@@ -63,23 +63,7 @@ public class EstudianteControllerRestFul {
 		estu.add(link2);
 		return ResponseEntity.status(HttpStatus.OK).body(estu);
 	}
-
-	/* GET -> ConsultarTodos por Género
-	// Antes:
-	// http://localhost:8082/API/v1.0/Matricula/estudiantes/consultarTodos?genero=M&edad=100
-	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes?genero=M GET */
-	@GetMapping(path = "/tmp" ,produces = MediaType.APPLICATION_XML_VALUE)
-	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero) {
-		List<Estudiante> lista = this.estudianteService.seleccionarTodos(genero);
-		HttpHeaders cabeceras = new HttpHeaders();
-		cabeceras.add("mensaje_242", "Lista consultada de manera satisfactoria.");
-		cabeceras.add("mensaje_info", "El sistema va estar en mantenimiento el fin de semana.");
-		return new ResponseEntity<>(lista, cabeceras, 242);
-	}
 	
-	
-	
-	// ***********************************  H A T E O A S ******************************************
 	/* GET -> Consultar TODOS EstudiantesTO (TIENE HATEOAS)
 	 // http://localhost:8082/API/v1.0/Matricula/estudiantes  GET 
 	 */	
@@ -119,9 +103,10 @@ public class EstudianteControllerRestFul {
 		return ResponseEntity.status(HttpStatus.OK).body(listaEstudiantesDTO);
 	}
 	
-	
 	// **********************************************************************************************
-	/* POST
+		
+		
+	/* POST 
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/guardar
 	// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes POST */
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -129,7 +114,7 @@ public class EstudianteControllerRestFul {
 		this.estudianteService.guardar(estudianteTO);
 	}
 
-	/* PUT
+	/* PUT 
 	// Antes: http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizar/{id}
 	// Después: http://localhost:8082/API/v1.0/Matricula/estudiantes PUT */
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -138,15 +123,15 @@ public class EstudianteControllerRestFul {
 		this.estudianteService.actualizar(estudianteTO);
 	}
 
-	/* PATCH
+	/* PATCH 
 	// http://localhost:8082/API/v1.0/Matricula/estudiantes/actualizarParcial/{id}
 	// http://localhost:8082/API/v1.0/Matricula/estudiantes/{id} PATCH */
-	@PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_XML_VALUE)
-	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
-		this.estudianteService.actualizarParcial(estudiante.getApellido(), estudiante.getNombre(), id);
+	@PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void actualizarParcial(@RequestBody EstudianteTO estudianteTO, @PathVariable Integer id) {
+		this.estudianteService.actualizarParcial(estudianteTO.getApellido(), estudianteTO.getNombre(), id);
 	}
 
-	/* DELETE
+	/* DELETE 
 	// http://localhost:8082/API/v1.0/Matricula/estudiantes/{id} DELETE */
 	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
@@ -154,3 +139,17 @@ public class EstudianteControllerRestFul {
 	}
 
 }
+
+
+///* GET -> ConsultarTodos por Género
+//// Antes:
+//// http://localhost:8082/API/v1.0/Matricula/estudiantes/consultarTodos?genero=M&edad=100
+//// Despues: http://localhost:8082/API/v1.0/Matricula/estudiantes?genero=M GET */
+//@GetMapping(path = "/tmp" ,produces = MediaType.APPLICATION_XML_VALUE)
+//public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam(required = false, defaultValue = "M") String genero) {
+//	List<Estudiante> lista = this.estudianteService.seleccionarTodos(genero);
+//	HttpHeaders cabeceras = new HttpHeaders();
+//	cabeceras.add("mensaje_242", "Lista consultada de manera satisfactoria.");
+//	cabeceras.add("mensaje_info", "El sistema va estar en mantenimiento el fin de semana.");
+//	return new ResponseEntity<>(lista, cabeceras, 242);
+//}
