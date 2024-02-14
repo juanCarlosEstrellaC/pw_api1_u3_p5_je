@@ -29,10 +29,18 @@ public class Materia {
 	@Column(name = "mate_creditos")
 	private Integer creditos;
 
+	// RELACIONES:
 	@ManyToOne
 	@JoinColumn(name = "mate_id_estudiante")
 	private Estudiante estudiante;
 
+	
+	//ToString
+	@Override
+	public String toString() {
+		return "Materia [id=" + id + ", nombre=" + nombre + ", creditos=" + creditos + "]";
+	}
+	
 	// GET Y SET
 	public Integer getId() {
 		return id;
@@ -65,4 +73,5 @@ public class Materia {
 	public void setEstudiante(Estudiante estudiante) {
 		this.estudiante = estudiante;
 	}
+
 }

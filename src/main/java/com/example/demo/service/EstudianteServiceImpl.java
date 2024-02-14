@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IEstudianteRepository;
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.repository.modelo.DTO.EstudianteDTO;
 import com.example.demo.service.to.EstudianteTO;
 
 @Service
@@ -48,7 +49,9 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
 	@Override
 	public List<EstudianteTO> buscarTodosTO() {
-		List<Estudiante> lista = this.estudianteRepository.seleccionarTodos("M");
+		//List<Estudiante> lista = this.estudianteRepository.seleccionarTodos("M");
+		
+		List<Estudiante> lista = this.estudianteRepository.seleccionarTodosSinFiltro();
 		List<EstudianteTO> listaFinal = new ArrayList<>();
 		for (Estudiante est : lista) {
 			listaFinal.add(this.convertir(est));
@@ -63,12 +66,27 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		estuTO.setApellido(est.getApellido());
 		estuTO.setGenero(est.getGenero());
 		estuTO.setFechaNacimiento(est.getFechaNacimiento());
+		estuTO.setEdad(est.getEdad());
+		estuTO.setDireccion(est.getDireccion());
+		estuTO.setEstadoCivil(est.getEstadoCivil());
+		estuTO.setHobby(est.getHobby());
+		estuTO.setNumeroHermanos(est.getNumeroHermanos());
 		return estuTO;
 	}
 
 	@Override
 	public EstudianteTO buscarTO(Integer id) {
 		return this.convertir(this.estudianteRepository.seleccionar(id));
+	}
+
+	@Override
+	public List<Estudiante> seleccionarTodosSinFiltro() {
+		return this.estudianteRepository.seleccionarTodosSinFiltro();
+	}
+
+	@Override
+	public List<EstudianteDTO> seleccionarTodosDTO() {
+		return this.estudianteRepository.seleccionarTodosDTO();
 	}
 
 }

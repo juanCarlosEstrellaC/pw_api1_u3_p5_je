@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.repository.modelo.DTO.EstudianteDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -60,6 +61,19 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e WHERE e.genero = :variable ", Estudiante.class);
 		myQuery.setParameter("variable", genero);
 		return myQuery.getResultList();
+	}
+
+	@Override
+	public List<Estudiante> seleccionarTodosSinFiltro() {
+		Query q = this.entityManager.createQuery("SELECT e FROM Estudiante e");
+		return q.getResultList();
+	}
+
+	@Override
+	public List<EstudianteDTO> seleccionarTodosDTO() {
+		Query q = this.entityManager
+				.createQuery("SELECT NEW com.example.demo.repository.modelo.DTO.EstudianteDTO(e.id, e.nombre) FROM Estudiante e");
+		return q.getResultList();
 	}
 
 

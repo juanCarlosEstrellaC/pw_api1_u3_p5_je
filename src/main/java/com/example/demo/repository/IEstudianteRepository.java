@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import java.util.List;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.repository.modelo.DTO.EstudianteDTO;
 
 public interface IEstudianteRepository {
 
@@ -14,5 +15,9 @@ public interface IEstudianteRepository {
 	public void eliminar(Integer id);
 	
 	public List<Estudiante> seleccionarTodos(String genero);
+	
+	public List<Estudiante> seleccionarTodosSinFiltro();
+	
+	public List<EstudianteDTO> seleccionarTodosDTO();
 	
 }
