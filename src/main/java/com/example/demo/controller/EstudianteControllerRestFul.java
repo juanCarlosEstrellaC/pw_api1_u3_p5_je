@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,6 +40,7 @@ http://localhost:8082/   API/v1.0/Matricula   /estudiantes   /consultar/{id}
  Las capacidades está representadas por los Métodos de esa clase controller. 	 | Las capacidades son los distintos [Endpoints]
 */
 
+@CrossOrigin//(value="http://localhost:8080")
 @RestController
 @RequestMapping(path = "/estudiantes") // debe ir en plural
 public class EstudianteControllerRestFul {
@@ -92,7 +94,7 @@ public class EstudianteControllerRestFul {
 	 // http://localhost:8082/API/v1.0/Matricula/estudiantes/DTO  GET 
 	 */	
 	@GetMapping(path = "/DTO",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<EstudianteDTO>> consultarTodosDTO(){
+		public ResponseEntity<List<EstudianteDTO>> consultarTodosDTO(){
 		List<EstudianteDTO> listaEstudiantesDTO = this.estudianteService.seleccionarTodosDTO();
 		for (EstudianteDTO estudianteDTO : listaEstudiantesDTO) {
 			Link link = linkTo(methodOn(EstudianteControllerRestFul.class).consultar(estudianteDTO.getId())).withSelfRel();
