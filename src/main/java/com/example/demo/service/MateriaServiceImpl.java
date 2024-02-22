@@ -10,8 +10,6 @@ import com.example.demo.repository.IMateriaRepository;
 import com.example.demo.repository.modelo.Materia;
 import com.example.demo.service.to.MateriaTO;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class MateriaServiceImpl implements IMateriaService {
 
