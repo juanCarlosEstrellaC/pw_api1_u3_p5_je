@@ -6,24 +6,28 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 
+
 @Component
 public class JwtUtils {
-
-	private static final Logger LOG = LoggerFactory.getLogger(JwtUtils.class);
-
+	
+	private static  final Logger LOG = LoggerFactory.getLogger(JwtUtils.class);
+	
 	public boolean validateJwtToken(String authToken) {
+		
 		try {
-			Jwts.parser().setSigningKey("gfdiofjoaisdjfioadjfioasdjfoiajdfioasjf1221221212aosidjf8af98adf8asdhusdhusdhauihdfudshfuiadhfaishfdaisuhfuiashfiuhdsffasdf").parseClaimsJwt(authToken); // este valida. Si pasa, retorna un true
+			Jwts.parser().setSigningKey("semillafckmsdmfmisofsfosofifisdefikiregi9483r84ruff8ufru87rg8ww322rrrrfsemillawdefrfgdtvgbomgobmdrb203290324825835824202405385358035edscfsdfsdfdsuio").parseClaimsJws(authToken);
 			return true;
-
-		} catch (Exception e) {
-			LOG.error("ERROOOR", e);
+		}catch(Exception e){
+			LOG.error("ERROR",e);
 		}
+		
 		return false;
 	}
 	
+	// Método para obtener el nombre del usuario
 	public String getuserNameFromjwtToken(String token) {
-		return Jwts.parser().setSigningKey("gfdiofjoaisdjfioadjfioasdjfoiajdfioasjf1221221212aosidjf8af98adf8asdhusdhusdhauihdfudshfuiadhfaishfdaisuhfuiashfiuhdsffasdf").parseClaimsJwt(token).getBody().getSubject();
-		
+		return Jwts.parser().setSigningKey("semillafckmsdmfmisofsfosofifisdefikiregi9483r84ruff8ufru87rg8ww322rrrrfsemillawdefrfgdtvgbomgobmdrb203290324825835824202405385358035edscfsdfsdfdsuio").parseClaimsJws(token).getBody().getSubject();
+
 	}
+
 }
